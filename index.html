@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberCrafts - Play Smart. Learn Fast. Shop Digital.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Tailwind Configuration (for colors and fonts) */
+        :root {
+            --color-primary: #30D5C8; /* Neon Turquoise/Blue */
+            --color-accent: #FF00FF; /* Neon Pink/Magenta */
+            --color-secondary-accent: #00FFFF; /* Bright Cyan/Aqua for specific highlights */
+            --color-dark: #121212; /* Very Dark, almost black */
+            --color-light: #F0F0F0; /* Off-white for readability */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-dark); /* Dark background */
+            color: var(--color-light); /* Light text for contrast */
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.2s; }
+        .fade-in-delay-2 { animation-delay: 0.4s; }
+        .fade-in-delay-3 { animation-delay: 0.6s; }
+        .fade-in-delay-4 { animation-delay: 0.8s; }
+
+        .hover-glow:hover {
+            box-shadow: 0 0 20px var(--color-accent); /* Pink glow */
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .hover-glow-primary:hover {
+            box-shadow: 0 0 25px var(--color-primary); /* Primary color glow */
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+
+        /* Specific classes for color usage */
+        .bg-primary-neon { background-color: var(--color-primary); }
+        .text-primary-neon { color: var(--color-primary); }
+        .border-primary-neon { border-color: var(--color-primary); }
+
+        .bg-accent-neon { background-color: var(--color-accent); }
+        .text-accent-neon { color: var(--color-accent); }
+        .border-accent-neon { border-color: var(--color-accent); }
+
+        .bg-secondary-accent-neon { background-color: var(--color-secondary-accent); }
+        .text-secondary-accent-neon { color: var(--color-secondary-accent); }
+        .border-secondary-accent-neon { border-color: var(--color-secondary-accent); }
+
+        .bg-dark-mode { background-color: var(--color-dark); }
+        .text-dark-mode { color: var(--color-dark); }
+
+        .text-light-mode { color: var(--color-light); }
+        
+        /* Custom scroll-padding for sticky header */
+        html {
+            scroll-padding-top: 80px; /* Adjust if header height changes */
+        }
+
+        /* **** CORRECTED/ADDED: CSS for hidden sections **** */
+        .hidden-section {
+            display: none;
+        }
+
+        /* 3D Transition for section changes (basic) */
+        .page-transition-active {
+            transition: all 0.8s ease-in-out;
+            transform-origin: center center;
+        }
+
+        .page-transition-enter-from {
+            opacity: 0;
+            transform: perspective(1000px) rotateY(90deg) scale(0.8);
+        }
+
+        .page-transition-leave-to {
+            opacity: 0;
+            transform: perspective(1000px) rotateY(-90deg) scale(0.8);
+            position: absolute; /* To allow next page to slide in */
+            width: 100%;
+        }
+
+        /* For active section, remove position absolute */
+        .page-transition-enter-active {
+            position: relative;
+            transform: perspective(1000px) rotateY(0deg) scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-dark-mode text-light-mode shadow-lg py-4 fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#home" class="text-3xl font-extrabold text-primary-neon tracking-wider page-link">CyberCrafts</a>
+
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-light-mode hover:text-accent-neon focus:outline-none focus:ring-2 focus:ring-accent-neon rounded-md p-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="hidden md:flex space-x-8 text-lg font-medium">
+                <li><a href="#home" class="hover:text-primary-neon transition-colors duration-300 page-link">Home</a></li>
+                <li><a href="#games" class="hover:text-primary-neon transition-colors duration-300 page-link">Games</a></li>
+                <li><a href="#shop" class="hover:text-primary-neon transition-colors duration-300 page-link">Shop</a></li>
+                <li><a href="#blog" class="hover:text-primary-neon transition-colors duration-300 page-link">Blog</a></li>
+                <li><a href="#about" class="hover:text-primary-neon transition-colors duration-300 page-link">About</a></li>
+                <li><a href="#contact" class="hover:text-primary-neon transition-colors duration-300 page-link">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-mode mt-2 py-2 rounded-md shadow-lg mx-4">
+            <ul class="flex flex-col p-4 space-y-3 text-lg font-medium">
+                <li><a href="#home" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Home</a></li>
+                <li><a href="#games" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Games</a></li>
+                <li><a href="#shop" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Shop</a></li>
+                <li><a href="#blog" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Blog</a></li>
+                <li><a href="#about" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">About</a></li>
+                <li><a href="#contact" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Contact</a></li>
+                <li><a href="#privacy" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Privacy Policy</a></li>
+                <li><a href="#terms" class="block text-light-mode hover:bg-gray-800 hover:text-primary-neon px-4 py-2 rounded-md transition-colors duration-300 page-link">Terms of Service</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="pt-20 relative overflow-hidden min-h-screen"> 
+        <section id="home" class="bg-dark-mode text-light-mode py-24 md:py-32 text-center relative overflow-hidden page-section active-section">
+            <div class="absolute inset-0 z-0 opacity-10" style="background-image: url('https://via.placeholder.com/1500x800/121212/30D5C8?text=Neon+Grid'); background-size: cover; background-position: center;"></div>
+            <div class="container mx-auto px-4 relative z-10">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-primary-neon fade-in">
+                    CyberCrafts
+                </h1>
+                <p class="text-xl md:text-3xl mb-10 font-light fade-in fade-in-delay-1">
+                    Play Smart. Learn Fast. Shop Digital.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 fade-in fade-in-delay-2">
+                    <a href="#games" class="bg-primary-neon text-dark-mode font-bold py-4 px-10 rounded-full shadow-lg hover:bg-teal-400 transition-all duration-300 transform hover:scale-105 page-link">
+                        Start Playing Now
+                    </a>
+                    <a href="#shop" class="bg-accent-neon text-dark-mode font-bold py-4 px-10 rounded-full shadow-lg hover:bg-fuchsia-600 transition-all duration-300 transform hover:scale-105 border-2 border-accent-neon hover:border-fuchsia-700 page-link">
+                        Explore Digital Shop
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="games" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon fade-in">Play Our Top Games</h2>
+                
+                <div class="flex flex-wrap justify-center gap-3 mb-10 fade-in fade-in-delay-1">
+                    <button class="game-filter-btn bg-primary-neon text-dark-mode px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300" data-filter="all">All Games</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="action">Action</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="puzzle">Puzzle</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="strategy">Strategy</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="simulation">Simulation</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="card">Card</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300 fade-in" data-genre="platformer adventure">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Pixel+Plumber" alt="Pixel Plumber Quest Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Pixel Plumber Quest</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Platformer, Adventure</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300 fade-in fade-in-delay-1" data-genre="simulation time-management">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Neon+Diner" alt="Neon Diner Dash Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Neon Diner Dash</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Simulation, Time Management</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300 fade-in fade-in-delay-2" data-genre="strategy board">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Cyber+Chess" alt="Cyber Knight Chess Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Cyber Knight Chess</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Strategy, Board</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300 fade-in fade-in-delay-3" data-genre="card strategy">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Cosmic+Cards" alt="Cosmic Card Clash Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Cosmic Card Clash</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Card Game, Strategy</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                     <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="action sci-fi adventure">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+Space" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Space Odyssey</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Sci-Fi, Adventure</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="puzzle brain-teaser">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+Puzzle" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Puzzle Mania Deluxe</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Puzzle, Brain Teaser</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12 fade-in fade-in-delay-4">
+                    <a href="#games-page" class="bg-primary-neon text-dark-mode py-3 px-8 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300 page-link">View All Games</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="shop" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon fade-in">Explore Our Digital Shop</h2>
+                <p class="text-center text-lg mb-10 text-gray-400 fade-in fade-in-delay-1">Find top-notch digital reels, plugins, prompts, and tools.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300 fade-in">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Reel+Pack" alt="Product Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Creative Reel Pack Vol. 1</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Reels</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹2499</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300 fade-in fade-in-delay-1">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=AI+Plugin" alt="Product Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">AI Content Writer Plugin</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Plugins</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹3999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300 fade-in fade-in-delay-2">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Prompt+Pack" alt="Product Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Midjourney Prompt Pack</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Prompts</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹1299</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300 fade-in fade-in-delay-3">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Synthwave+Music" alt="Product Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Synthwave Music Pack Vol. 1</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Audio</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹1999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12 fade-in fade-in-delay-4">
+                    <a href="#shop-page" class="bg-accent-neon text-dark-mode py-3 px-8 rounded-full font-semibold hover:bg-fuchsia-600 transition-colors duration-300 page-link">View All Products</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon fade-in">Latest from Our Blog & News</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 fade-in">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+AI+Tools" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">AI Tools</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">10 Essential AI Tools for Content Creators in 2025</h3>
+                            <p class="text-gray-400 text-base mb-4">Discover the best AI-powered applications to boost your content creation workflow...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 fade-in fade-in-delay-1">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+Quantum" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">Tech News</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">The Rise of Quantum Computing: What You Need to Know</h3>
+                            <p class="text-gray-400 text-base mb-4">Quantum computing is poised to revolutionize technology. Here's a beginner's guide...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 fade-in fade-in-delay-2">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+SEO" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">SEO Tips</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">Mastering On-Page SEO for Higher Rankings in 2025</h3>
+                            <p class="text-gray-400 text-base mb-4">Improve your website's visibility with these actionable on-page SEO strategies...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12 fade-in fade-in-delay-3">
+                    <a href="#blog-page" class="bg-primary-neon text-dark-mode py-3 px-8 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300 page-link">View All Articles</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-16 md:py-24 bg-dark-mode text-light-mode text-center page-section hidden-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-primary-neon fade-in">What Our Users Say</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-lg fade-in hover-glow">
+                        <p class="text-lg italic mb-6">"CyberCrafts is my go-to for quick, fun games. The shop has amazing plugins too!"</p>
+                        <p class="font-semibold text-secondary-accent-neon">- Anya S., Gamer & Developer</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-lg fade-in fade-in-delay-1 hover-glow">
+                        <p class="text-lg italic mb-6">"The blog is a goldmine for tech insights. CyberCrafts helps me stay ahead."</p>
+                        <p class="font-semibold text-secondary-accent-neon">- Rohan M., Tech Enthusiast</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-lg fade-in fade-in-delay-2 hover-glow">
+                        <p class="text-lg italic mb-6">"Found the perfect prompts for my AI projects. Highly recommend the digital shop!"</p>
+                        <p class="font-semibold text-secondary-accent-neon">- Priya K., AI Artist</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">About CyberCrafts</h2>
+                <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-300">
+                    <p class="mb-6">
+                        CyberCrafts is dedicated to bringing you the best in digital experiences. From captivating games that challenge your mind to a vast marketplace of digital assets designed to boost your creativity and productivity, we're your one-stop hub for all things digital.
+                    </p>
+                    <p class="mb-6">
+                        Our mission is to foster a community where learning and innovation thrive. We believe in providing accessible, high-quality resources and entertainment that empower individuals to "Play Smart, Learn Fast, and Shop Digital."
+                    </p>
+                    <p>
+                        Explore our curated collection of games, dive into our digital shop for powerful tools and creative assets, and stay informed with our insightful blog. Join the CyberCrafts revolution today!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">Get in Touch</h2>
+                <div class="max-w-2xl mx-auto bg-gray-900 p-8 rounded-lg shadow-lg">
+                    <p class="text-center text-lg mb-8 text-gray-300">We'd love to hear from you!</p>
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-light-mode text-lg font-medium mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-neon text-light-mode" placeholder="Your Name" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-light-mode text-lg font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-neon text-light-mode" placeholder="your@example.com" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-light-mode text-lg font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-neon text-light-mode" placeholder="Your message..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-primary-neon text-dark-mode font-bold py-3 px-8 rounded-full shadow-lg hover:bg-teal-400 transition-all duration-300 transform hover:scale-105">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">Privacy Policy</h2>
+                <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-300">
+                    <p class="mb-6">
+                        At CyberCrafts, your privacy is paramount. This policy outlines how we collect, use, and protect your personal information.
+                    </p>
+                    <h3 class="text-2xl font-bold text-primary-neon mb-4">1. Information We Collect</h3>
+                    <p class="mb-4">
+                        We collect information you provide directly to us, such as when you create an account, make a purchase, or contact us. This may include your name, email address, payment information, and any other details you choose to provide.
+                    </p>
+                    <p class="mb-6">
+                        We also automatically collect certain information when you access and use our services, such as your IP address, device information, browser type, and usage data.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">2. How We Use Your Information</h3>
+                    <p class="mb-4">
+                        We use the information we collect to:
+                    </p>
+                    <ul class="list-disc list-inside mb-6 space-y-2">
+                        <li>Provide, maintain, and improve our services.</li>
+                        <li>Process transactions and send you related information.</li>
+                        <li>Send you technical notices, updates, security alerts, and support messages.</li>
+                        <li>Respond to your comments, questions, and customer service requests.</li>
+                        <li>Monitor and analyze trends, usage, and activities in connection with our services.</li>
+                    </ul>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">3. Sharing Your Information</h3>
+                    <p class="mb-6">
+                        We do not share, sell, or rent your personal information to third parties without your explicit consent, except in specific limited circumstances described in this policy, such as with service providers who perform functions on our behalf.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">4. Security</h3>
+                    <p class="mb-6">
+                        We take reasonable measures to help protect information about you from loss, theft, misuse, unauthorized access, disclosure, alteration, and destruction.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">5. Your Choices</h3>
+                    <p class="mb-6">
+                        You have certain choices regarding the information we collect and how it is used. You can update your account information, opt out of promotional communications, and disable cookies through your browser settings.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">6. Changes to This Policy</h3>
+                    <p class="mb-6">
+                        We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">7. Contact Us</h3>
+                    <p>
+                        If you have any questions about this Privacy Policy, please contact us at privacy@cybercrafts.com.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="terms" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">Terms of Service</h2>
+                <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-300">
+                    <p class="mb-6">
+                        Welcome to CyberCrafts! These Terms of Service ("Terms") govern your use of our website, games, digital shop, and other related services (collectively, the "Services"). By accessing or using our Services, you agree to be bound by these Terms.
+                    </p>
+                    <h3 class="text-2xl font-bold text-primary-neon mb-4">1. Acceptance of Terms</h3>
+                    <p class="mb-6">
+                        By using the Services, you agree to comply with and be legally bound by these Terms. If you do not agree to these Terms, you may not access or use the Services.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">2. Changes to Terms</h3>
+                    <p class="mb-6">
+                        We reserve the right to modify or update these Terms at any time. We will notify you of any changes by posting the new Terms on this page. Your continued use of the Services after such changes constitutes your acceptance of the new Terms.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">3. User Accounts</h3>
+                    <p class="mb-6">
+                        To access certain features of the Services, you may be required to create an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for safeguarding your password and for any activities or actions under your account.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">4. Digital Products and Purchases</h3>
+                    <p class="mb-6">
+                        Our digital shop offers various digital products. All sales of digital products are final. Once a digital product is purchased and delivered, it cannot be returned or refunded unless explicitly stated otherwise or required by law.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">5. Intellectual Property</h3>
+                    <p class="mb-6">
+                        All content on the CyberCrafts website, including text, graphics, logos, game content, digital products, and software, is the property of CyberCrafts or its licensors and is protected by intellectual property laws. You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on our Service.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">6. Prohibited Conduct</h3>
+                    <p class="mb-6">
+                        You agree not to engage in any of the following prohibited activities: (a) copying, distributing, or disclosing any part of the Services in any medium; (b) using any automated system to access the Services; (c) transmitting spam, chain letters, or other unsolicited email; (d) attempting to interfere with, compromise the system integrity or security; (e) taking any action that imposes an unreasonable large load on our infrastructure.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">7. Disclaimer of Warranties</h3>
+                    <p class="mb-6">
+                        The Services are provided on an "as is" and "as available" basis. CyberCrafts makes no warranties, express or implied, regarding the Services.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">8. Limitation of Liability</h3>
+                    <p class="mb-6">
+                        To the maximum extent permitted by law, CyberCrafts shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your access to or use of or inability to access or use the Services; (b) any conduct or content of any third party on the Services.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">9. Governing Law</h3>
+                    <p class="mb-6">
+                        These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions.
+                    </p>
+                    <h3 class="2xl font-bold text-primary-neon mb-4">10. Contact Information</h3>
+                    <p>
+                        If you have any questions about these Terms, please contact us at legal@cybercrafts.com.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="games-page" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">All Games</h2>
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button class="game-filter-btn bg-primary-neon text-dark-mode px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300" data-filter="all">All</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="action">Action</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="puzzle">Puzzle</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="strategy">Strategy</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="board">Board</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="platformer">Platformer</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="simulation">Simulation</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="card">Card</button>
+                    <button class="game-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="casual">Casual</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="platformer adventure">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Pixel+Plumber" alt="Pixel Plumber Quest Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Pixel Plumber Quest</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Platformer, Adventure</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="simulation time-management">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Neon+Diner" alt="Neon Diner Dash Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Neon Diner Dash</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Simulation, Time Management</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="strategy board">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Cyber+Chess" alt="Cyber Knight Chess Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Cyber Knight Chess</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Strategy, Board</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="card strategy">
+                        <img src="https://via.placeholder.com/400x250/30D5C8/121212?text=Cosmic+Cards" alt="Cosmic Card Clash Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Cosmic Card Clash</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Card Game, Strategy</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="action sci-fi adventure">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+Space" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Space Odyssey</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Sci-Fi, Adventure</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="puzzle brain-teaser">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+Puzzle" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Puzzle Mania Deluxe</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Puzzle, Brain Teaser</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="casual arcade">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+Arcade" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Arcade Classics</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Casual, Arcade</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                    <div class="game-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow-primary transition-all duration-300" data-genre="strategy rts">
+                        <img src="https://via.placeholder.com/400x250/FF00FF/121212?text=Game+RTS" alt="Game Thumbnail" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Galactic Conquest</h3>
+                            <p class="text-gray-400 text-sm mb-4">Genre: Strategy, RTS</p>
+                            <a href="#" class="bg-accent-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-fuchsia-600 transition-colors duration-300">Play Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="shop-page" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">All Digital Products</h2>
+                <p class="text-center text-lg mb-10 text-gray-400">Browse our full catalog of digital goods.</p>
+
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button class="product-filter-btn bg-primary-neon text-dark-mode px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300" data-filter="all">All</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="reels">Reels</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="plugins">Plugins</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="prompts">Prompts</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="audio">Audio</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="templates">Templates</button>
+                    <button class="product-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="software">Software</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="reels">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Reel+Pack" alt="Creative Reel Pack Vol. 1" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Creative Reel Pack Vol. 1</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Reels</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹2499</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="plugins">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=AI+Plugin" alt="AI Content Writer Plugin" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">AI Content Writer Plugin</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Plugins</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹3999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="prompts">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Prompt+Pack" alt="Midjourney Prompt Pack" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Midjourney Prompt Pack</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Prompts</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹1299</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="audio">
+                        <img src="https://via.placeholder.com/400x300/FF00FF/121212?text=Synthwave+Music" alt="Synthwave Music Pack Vol. 1" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Synthwave Music Pack Vol. 1</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Audio</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹1999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="templates">
+                        <img src="https://via.placeholder.com/400x300/00FFFF/121212?text=Web+Templates" alt="Modern Web Templates" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Modern Web Templates Pack</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Templates</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹2999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="software">
+                        <img src="https://via.placeholder.com/400x300/00FFFF/121212?text=Productivity+Software" alt="Ultimate Productivity Suite" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Ultimate Productivity Suite</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Software</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹7999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="prompts">
+                        <img src="https://via.placeholder.com/400x300/00FFFF/121212?text=ChatGPT+Prompts" alt="ChatGPT Advanced Prompts" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">ChatGPT Advanced Prompts</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Prompts</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹999</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover-glow transition-all duration-300" data-category="reels">
+                        <img src="https://via.placeholder.com/400x300/00FFFF/121212?text=Social+Media+Reels" alt="Social Media Engagement Reels" class="w-full h-56 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-light-mode mb-2">Social Media Engagement Reels</h3>
+                            <p class="text-gray-400 text-sm mb-4">Category: Reels</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-secondary-accent-neon">₹1799</span>
+                                <a href="#" class="bg-primary-neon text-dark-mode py-2 px-4 rounded-full text-sm font-semibold hover:bg-teal-400 transition-colors duration-300">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog-page" class="py-16 md:py-24 bg-dark-mode text-light-mode hidden-section page-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-primary-neon">All Articles</h2>
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button class="blog-filter-btn bg-primary-neon text-dark-mode px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors duration-300" data-filter="all">All</button>
+                    <button class="blog-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="ai-tools">AI Tools</button>
+                    <button class="blog-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="tech-news">Tech News</button>
+                    <button class="blog-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="seo-tips">SEO Tips</button>
+                    <button class="blog-filter-btn bg-gray-800 text-light-mode px-6 py-2 rounded-full font-semibold hover:bg-primary-neon hover:text-dark-mode transition-colors duration-300" data-filter="gaming">Gaming</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="ai-tools">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+AI+Tools" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">AI Tools</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">10 Essential AI Tools for Content Creators in 2025</h3>
+                            <p class="text-gray-400 text-base mb-4">Discover the best AI-powered applications to boost your content creation workflow...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="tech-news">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+Quantum" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">Tech News</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">The Rise of Quantum Computing: What You Need to Know</h3>
+                            <p class="text-gray-400 text-base mb-4">Quantum computing is poised to revolutionize technology. Here's a beginner's guide...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="seo-tips">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+SEO" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">SEO Tips</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">Mastering On-Page SEO for Higher Rankings in 2025</h3>
+                            <p class="text-gray-400 text-base mb-4">Improve your website's visibility with these actionable on-page SEO strategies...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="gaming">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+Gaming" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">Gaming</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">The Evolution of Gaming: From Pixels to VR</h3>
+                            <p class="text-gray-400 text-base mb-4">A look back at how video games have transformed over the decades...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                     <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="tech-news">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+Blockchain" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">Tech News</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">Blockchain Beyond Crypto: New Applications in Tech</h3>
+                            <p class="text-gray-400 text-base mb-4">Exploring innovative uses for blockchain technology outside of cryptocurrency...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="blog-card bg-gray-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300" data-category="ai-tools">
+                        <img src="https://via.placeholder.com/600x400/30D5C8/121212?text=Blog+AI+Art" alt="Blog Post Thumbnail" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <span class="text-accent-neon text-sm font-semibold mb-2 block">AI Tools</span>
+                            <h3 class="text-xl font-semibold text-light-mode mb-3 leading-tight">Creating Stunning Art with AI: A Beginner's Guide</h3>
+                            <p class="text-gray-400 text-base mb-4">Unleash your artistic potential with the latest AI art generation tools...</p>
+                            <a href="#" class="text-primary-neon hover:text-secondary-accent-neon font-medium text-sm">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-light-mode py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-4 md:mb-0">
+                    <a href="#home" class="text-3xl font-extrabold text-primary-neon tracking-wider page-link">CyberCrafts</a>
+                    <p class="text-gray-400 text-sm mt-2">Play Smart. Learn Fast. Shop Digital.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://twitter.com" target="_blank" class="text-light-mode hover:text-accent-neon transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.007-.532A8.318 8.318 0 0022 5.385a8.282 8.282 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.243 8.243 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.91 9.1c0 .054 0 .108 0 .162a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.326a11.649 11.649 0 006.29 1.84L6.96 18.251c-4.108 0-7.98-2.28-7.98-2.28s1.606 2.593 4.542 4.28z"></path></svg>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" class="text-light-mode hover:text-accent-neon transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22H12c5.523 0 10-4.477 10-10z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="text-light-mode hover:text-accent-neon transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2.449a.75.75 0 00-.776 0C11.185 2.766 6.326 4.914 2.305 9.426a19.953 19.953 0 000 5.148c4.021 4.512 8.88 6.66 9.234 6.777a.75.75 0 00.776 0c.354-.117 5.213-2.265 9.234-6.777a19.953 19.953 0 000-5.148C17.674 4.914 12.815 2.766 12.315 2.449zM12 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM12 7a5 5 0 100 10 5 5 0 000-10zM12 9a3 3 0 110 6 3 3 0 010-6z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 mt-8">
+                <p class="text-gray-500 text-sm">&copy; 2025 CyberCrafts. All rights reserved.</p>
+                <div class="flex justify-center space-x-4 mt-4 text-sm">
+                    <a href="#privacy" class="text-gray-400 hover:text-primary-neon page-link">Privacy Policy</a>
+                    <a href="#terms" class="text-gray-400 hover:text-primary-neon page-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.page-link'); // Select all navigation links
+            const pageSections = document.querySelectorAll('.page-section'); // All sections to manage
+            const mainContent = document.querySelector('main'); // Main content area for relative positioning
+
+            // Function to show a specific section with transition
+            function showSection(targetId) {
+                const currentActiveSection = document.querySelector('.active-section');
+                const targetSection = document.getElementById(targetId);
+
+                if (currentActiveSection && currentActiveSection !== targetSection) {
+                    // Start transition for the current active section (fade out/rotate out)
+                    currentActiveSection.classList.remove('page-transition-enter-active');
+                    currentActiveSection.classList.add('page-transition-leave-to', 'page-transition-active');
+
+                    // Set a timeout to hide the old section and show the new one after transition
+                    setTimeout(() => {
+                        currentActiveSection.classList.add('hidden-section');
+                        currentActiveSection.classList.remove('active-section', 'page-transition-leave-to', 'page-transition-active');
+
+                        // Show the target section
+                        if (targetSection) {
+                            targetSection.classList.remove('hidden-section');
+                            targetSection.classList.add('active-section', 'page-transition-enter-from', 'page-transition-active');
+
+                            // Allow a brief moment for the 'enter-from' state to apply before transitioning
+                            requestAnimationFrame(() => {
+                                targetSection.classList.remove('page-transition-enter-from');
+                                targetSection.classList.add('page-transition-enter-active');
+                            });
+                        }
+                        // Scroll to the top of the new section
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 800); // Match this with your CSS transition duration
+                } else if (!currentActiveSection && targetSection) {
+                    // Initial load or if no active section
+                    targetSection.classList.remove('hidden-section');
+                    targetSection.classList.add('active-section', 'page-transition-enter-active');
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Handle navigation clicks for "page" changes
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent default hash jump
+                    mobileMenu.classList.add('hidden'); // Hide mobile menu on click
+                    
+                    const targetId = this.getAttribute('href').substring(1); // Get section ID from href
+                    showSection(targetId);
+                });
+            });
+
+            // Handle initial page load based on URL hash or default to 'home'
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                showSection(initialHash);
+            } else {
+                showSection('home'); // Show home section by default
+            }
+
+            // Game and Product Filtering Logic (added)
+            const gameFilterButtons = document.querySelectorAll('.game-filter-btn');
+            const gameCards = document.querySelectorAll('.game-card');
+
+            gameFilterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+
+                    gameFilterButtons.forEach(btn => {
+                        if (btn === this) {
+                            btn.classList.remove('bg-gray-800', 'text-light-mode');
+                            btn.classList.add('bg-primary-neon', 'text-dark-mode');
+                        } else {
+                            btn.classList.add('bg-gray-800', 'text-light-mode');
+                            btn.classList.remove('bg-primary-neon', 'text-dark-mode');
+                        }
+                    });
+
+                    gameCards.forEach(card => {
+                        const genres = card.dataset.genre.split(' ');
+                        if (filter === 'all' || genres.includes(filter)) {
+                            card.style.display = 'block'; // Or flex, grid depending on layout
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            const productFilterButtons = document.querySelectorAll('.product-filter-btn');
+            const productCards = document.querySelectorAll('.product-card');
+
+            productFilterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+
+                    productFilterButtons.forEach(btn => {
+                        if (btn === this) {
+                            btn.classList.remove('bg-gray-800', 'text-light-mode');
+                            btn.classList.add('bg-primary-neon', 'text-dark-mode');
+                        } else {
+                            btn.classList.add('bg-gray-800', 'text-light-mode');
+                            btn.classList.remove('bg-primary-neon', 'text-dark-mode');
+                        }
+                    });
+
+                    productCards.forEach(card => {
+                        const category = card.dataset.category;
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block'; // Or flex, grid depending on layout
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            const blogFilterButtons = document.querySelectorAll('.blog-filter-btn');
+            const blogCards = document.querySelectorAll('.blog-card');
+
+            blogFilterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+
+                    blogFilterButtons.forEach(btn => {
+                        if (btn === this) {
+                            btn.classList.remove('bg-gray-800', 'text-light-mode');
+                            btn.classList.add('bg-primary-neon', 'text-dark-mode');
+                        } else {
+                            btn.classList.add('bg-gray-800', 'text-light-mode');
+                            btn.classList.remove('bg-primary-neon', 'text-dark-mode');
+                        }
+                    });
+
+                    blogCards.forEach(card => {
+                        const category = card.dataset.category;
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block'; // Or flex, grid depending on layout
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+
+        });
+    </script>
+</body>
+</html>
